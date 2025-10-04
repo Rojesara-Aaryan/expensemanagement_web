@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 
 // --- Helper Components ---
 
@@ -200,9 +202,9 @@ export default function Welcome() {
             />
             <div className="forgot-password">
               <div className="forgot-text">
-                <a href="#" className="forgot-link">
+                <Link to="/forgot-password" className="forgot-link">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
             <FormButton type="submit">Sign In</FormButton>
