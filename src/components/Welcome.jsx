@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-
+import { signupUser } from '../api/signupService'; // import your API service
 
 // --- Helper Components ---
 
@@ -148,39 +148,37 @@ export default function Welcome() {
     }
   };
 
-  const handleSignup = (e) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-    const allCompanies = JSON.parse(localStorage.getItem('companies')) || [];
-    const newCompanyId = allCompanies.length + 1;
-    const newCompany = {
-      id: newCompanyId,
-      name: formData.name,
-      country: selectedCountry,
-      currency: currency,
-    };
-    allCompanies.push(newCompany);
-    localStorage.setItem('companies', JSON.stringify(allCompanies));
 
-    const allUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const newUserId = allUsers.length + 1;
-    const newUser = {
-      id: newUserId,
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: 'admin',
-      companyId: newCompanyId,
-    };
-    allUsers.push(newUser);
-    localStorage.setItem('users', JSON.stringify(allUsers));
 
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    navigate('/dashboard');
+const handleSignup = async (e) => {
+  e.preventDefault();
+
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords don't match!");
+    return;
+  }
+
+  // Prepare data to send to backend
+  const signupData = {
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+    country: selectedCountry,
+    currency: currency
   };
+
+  try {
+    const result = await signupUser(signupData);
+
+    // store user info or token returned from API
+    localStorage.setItem('currentUser', JSON.stringify(result.user));
+
+    navigate('/dashboard');
+  } catch (error) {
+    alert(error.message); // show API error message
+  }
+};
+
 
   const handleNextStep = () => {
     if (selectedCountry && currency) setSignupStep(2);
