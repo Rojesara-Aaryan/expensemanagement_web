@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Chart from 'chart.js/auto';
 
 // Assuming FormInput and FormButton are imported from a shared file
-import { FormInput, FormButton } from './SharedComponents'; // Adjust the import path as needed
+import { FormInput, FormButton } from './SharedComponts'; // Adjust the import path as needed
 
 const Dashboard = ({ currentUser, setCurrentUser }) => {
   const [expenses, setExpenses] = useState([]);

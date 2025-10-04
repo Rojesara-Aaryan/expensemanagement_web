@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Welcome from './components/Welcome';
 import './index.css'; // Make sure this import is here
 import ForgotPass from "./components/ForgotPass";
+import Dashboard from "./components/Dashboard";
 import Uploadsection from "./components/Uploadsection";
 import EmployDetails from "./components/EmployDetails";
 import Employesview from "./components/Employesview";
@@ -12,7 +13,7 @@ function App() {
       <Routes>
         {/* Default landing page */}
         <Route path="/" element={<Welcome />} />
-
+        <Route path="/Dashboard" element={<Dashboard />} />
         {/* Forgot password page */}
         <Route path="/forgot-password" element={<ForgotPass />} />
 
