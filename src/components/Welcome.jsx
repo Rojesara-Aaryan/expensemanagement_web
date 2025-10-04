@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 // --- Helper Components ---
@@ -134,10 +134,18 @@ export default function Welcome() {
     setSignupStep(1);
   };
 
+  const navigate = useNavigate();
+
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Logging in with:', formData.email, formData.password);
-    alert('Login functionality would be handled here!');
+    const allUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const user = allUsers.find(u => u.email === formData.email && u.password === formData.password);
+    if (user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      navigate('/dashboard');
+    } else {
+      alert('Invalid credentials!');
+    }
   };
 
   const handleSignup = (e) => {
@@ -146,8 +154,32 @@ export default function Welcome() {
       alert("Passwords don't match!");
       return;
     }
-    console.log('Signing up with:', { ...formData, country: selectedCountry, currency });
-    alert('Signup functionality would be handled here!');
+    const allCompanies = JSON.parse(localStorage.getItem('companies')) || [];
+    const newCompanyId = allCompanies.length + 1;
+    const newCompany = {
+      id: newCompanyId,
+      name: formData.name,
+      country: selectedCountry,
+      currency: currency,
+    };
+    allCompanies.push(newCompany);
+    localStorage.setItem('companies', JSON.stringify(allCompanies));
+
+    const allUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const newUserId = allUsers.length + 1;
+    const newUser = {
+      id: newUserId,
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      role: 'admin',
+      companyId: newCompanyId,
+    };
+    allUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(allUsers));
+
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    navigate('/dashboard');
   };
 
   const handleNextStep = () => {
