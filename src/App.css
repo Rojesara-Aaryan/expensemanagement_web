@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.App-header {
+  background-color: #282c34;
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+}
